@@ -99,5 +99,48 @@ public class CheckoutTest {
         int total = checkout.calculateTotal(APPLE, APPLE, ORANGE);
         assertEquals(85, total);
     }
+
+    @Test
+    public void shouldCheckoutCorrectlyWithNo3For2OfferOnTwoOranges() {
+        Checkout checkout = new Checkout();
+        int total = checkout.calculateTotal(ORANGE, ORANGE);
+        assertEquals(50, total);
+    }
+
+    @Test
+    public void shouldCheckoutCorrectlyWith3For2OfferOnThreeOranges() {
+        Checkout checkout = new Checkout();
+        int total = checkout.calculateTotal(ORANGE, ORANGE, ORANGE);
+        assertEquals(50, total);
+    }
+
+    @Test
+    public void shouldCheckoutCorrectlyWith3For2OfferOnFourOranges() {
+        Checkout checkout = new Checkout();
+        int total = checkout.calculateTotal(ORANGE, ORANGE, ORANGE, ORANGE);
+        assertEquals(75, total);
+    }
+
+    @Test
+    public void shouldCheckoutCorrectlyWith3For2OfferOnFiveOranges() {
+        Checkout checkout = new Checkout();
+        int total = checkout.calculateTotal(ORANGE, ORANGE, ORANGE, ORANGE, ORANGE);
+        assertEquals(100, total);
+    }
+
+    @Test
+    public void shouldCheckoutCorrectlyWith3For2OfferOnSixOranges() {
+        Checkout checkout = new Checkout();
+        int total = checkout.calculateTotal(ORANGE, ORANGE, ORANGE, ORANGE, ORANGE, ORANGE);
+        assertEquals(100, total);
+    }
+
+    @Test
+    public void shouldCheckoutCorrectlyWithBothOffersOnApplesAndOranges() {
+        Checkout checkout = new Checkout();
+        int total = checkout.calculateTotal(APPLE, APPLE, ORANGE, APPLE, ORANGE, ORANGE, ORANGE);
+        assertEquals(195, total);
+    }
+
 }
 

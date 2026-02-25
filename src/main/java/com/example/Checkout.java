@@ -31,6 +31,9 @@ public class Checkout {
             if (item.equals(APPLE)) {
                 // Buy one get one free
                 total += applyBuyOneGetOneFreeOffer(price, count);
+            } else if (item.equals(ORANGE)) {
+                // Three for the price of two
+                total += applyThreeForTwoOffer(price, count);
             } else {
                 // No offer
                 total += price * count;
@@ -56,5 +59,9 @@ public class Checkout {
 
     private static int applyBuyOneGetOneFreeOffer(int price, int count) {
         return ((count / 2) + (count % 2)) * price;
+    }
+
+    private static int applyThreeForTwoOffer(int price, int count) {
+        return ((count / 3) * 2 + (count % 3)) * price;
     }
 }

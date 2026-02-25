@@ -1,7 +1,8 @@
 package com.example;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class Checkout {
 
@@ -18,21 +19,42 @@ public class Checkout {
             throw new IllegalArgumentException("Items cannot be null");
         }
 
+        Map<String, Integer> itemCounts = getItemCounts(items);
+
         int total = 0;
 
+        for (Entry<String, Integer> entry : itemCounts.entrySet()) {
+            String item = entry.getKey();
+            int count = entry.getValue();
+            int price = PRICES.get(item);
+
+            if (item.equals(APPLE)) {
+                // Buy one get one free
+                total += applyBuyOneGetOneFreeOffer(price, count);
+            } else {
+                // No offer
+                total += price * count;
+            }
+        }
+
+        return total;
+    }
+
+    private static Map<String, Integer> getItemCounts(String[] items) {
+        Map<String, Integer> itemCounts = new HashMap<>();
         for (String item : items) {
             if (item == null) {
                 throw new IllegalArgumentException("Item cannot be null");
             }
-            Integer price = PRICES.get(item);
-
-            if (price == null) {
+            if (!PRICES.containsKey(item)) {
                 throw new IllegalArgumentException("Unknown item: " + item);
             }
-
-            total += price;
+            itemCounts.put(item, itemCounts.getOrDefault(item, 0) + 1);
         }
+        return itemCounts;
+    }
 
-        return total;
+    private static int applyBuyOneGetOneFreeOffer(int price, int count) {
+        return ((count / 2) + (count % 2)) * price;
     }
 }

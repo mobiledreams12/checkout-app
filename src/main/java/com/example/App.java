@@ -1,10 +1,11 @@
 package com.example;
 
-/**
- * Hello world!
- */
+import static com.example.Checkout.APPLE;
+import static com.example.Checkout.ORANGE;
+
 public class App {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Checkout checkout = new Checkout();
+        System.out.println(checkout.calculateTotal(APPLE, ORANGE, APPLE));
     }
 }

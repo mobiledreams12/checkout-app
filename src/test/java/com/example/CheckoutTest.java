@@ -17,24 +17,17 @@ public class CheckoutTest {
     }
 
     @Test
-    public void shouldThrowExceptionWithInvalidItem() {
-        Checkout checkout = new Checkout();
-        assertThrows(IllegalArgumentException.class,
-                () -> checkout.calculateTotal("PEACH"));
-    }
-
-    @Test
     public void shouldThrowExceptionWithNullStringItem() {
         Checkout checkout = new Checkout();
         assertThrows(IllegalArgumentException.class,
-                () -> checkout.calculateTotal((String) null));
+                () -> checkout.calculateTotal((Item) null));
     }
 
     @Test
     public void shouldThrowExceptionWithNullStringArrayItem() {
         Checkout checkout = new Checkout();
         assertThrows(IllegalArgumentException.class,
-                () -> checkout.calculateTotal((String[]) null));
+                () -> checkout.calculateTotal((Item[]) null));
     }
 
     @Test
@@ -49,13 +42,6 @@ public class CheckoutTest {
         Checkout checkout = new Checkout();
         int total = checkout.calculateTotal(ORANGE);
         assertEquals(25, total);
-    }
-
-    @Test
-    public void shouldThrowExceptionWithMultipleValidItemsAndInvalidItem() {
-        Checkout checkout = new Checkout();
-        assertThrows(IllegalArgumentException.class,
-                () -> checkout.calculateTotal(APPLE, "PEACH", ORANGE));
     }
 
     @Test

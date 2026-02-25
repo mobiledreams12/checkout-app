@@ -6,36 +6,32 @@ import java.util.Map.Entry;
 
 public class Checkout {
 
-    public static final String APPLE = "Apple";
-    public static final String ORANGE = "Orange";
+    public static final Item APPLE = new Item("Apple", 60);
+    public static final Item ORANGE = new Item("Orange", 25);
 
-    private static final Map<String, Integer> PRICES = Map.of(
-            APPLE, 60,
-            ORANGE, 25
+    private final Map<Item, Offer> offers = Map.of(
+            APPLE, new BuyOneGetOneFreeOffer(),
+            ORANGE, new ThreeForTwoOffer()
     );
 
-    public int calculateTotal(String... items) {
+    public int calculateTotal(Item... items) {
         if (items == null) {
             throw new IllegalArgumentException("Items cannot be null");
         }
 
-        Map<String, Integer> itemCounts = getItemCounts(items);
+        Map<Item, Integer> itemCounts = getItemCounts(items);
 
         int total = 0;
 
-        for (Entry<String, Integer> entry : itemCounts.entrySet()) {
-            String item = entry.getKey();
+        for (Entry<Item, Integer> entry : itemCounts.entrySet()) {
+            Item item = entry.getKey();
             int count = entry.getValue();
-            int price = PRICES.get(item);
+            int price = item.price();
 
-            if (item.equals(APPLE)) {
-                // Buy one get one free
-                total += applyBuyOneGetOneFreeOffer(price, count);
-            } else if (item.equals(ORANGE)) {
-                // Three for the price of two
-                total += applyThreeForTwoOffer(price, count);
+            Offer offer = offers.get(item);
+            if (offer != null) {
+                total += offer.apply(price, count);
             } else {
-                // No offer
                 total += price * count;
             }
         }
@@ -43,25 +39,14 @@ public class Checkout {
         return total;
     }
 
-    private static Map<String, Integer> getItemCounts(String[] items) {
-        Map<String, Integer> itemCounts = new HashMap<>();
-        for (String item : items) {
+    private static Map<Item, Integer> getItemCounts(Item[] items) {
+        Map<Item, Integer> itemCounts = new HashMap<>();
+        for (Item item : items) {
             if (item == null) {
                 throw new IllegalArgumentException("Item cannot be null");
-            }
-            if (!PRICES.containsKey(item)) {
-                throw new IllegalArgumentException("Unknown item: " + item);
             }
             itemCounts.put(item, itemCounts.getOrDefault(item, 0) + 1);
         }
         return itemCounts;
-    }
-
-    private static int applyBuyOneGetOneFreeOffer(int price, int count) {
-        return ((count / 2) + (count % 2)) * price;
-    }
-
-    private static int applyThreeForTwoOffer(int price, int count) {
-        return ((count / 3) * 2 + (count % 3)) * price;
     }
 }
